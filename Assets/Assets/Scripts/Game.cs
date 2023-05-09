@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor;
 
 public class Game : MonoBehaviour
 {
@@ -18,6 +19,7 @@ public class Game : MonoBehaviour
 
     public float levelLoadingDelay = 1.5f;
 
+    public GameObject victoryText, loseText;
     private void Awake()
     {
         _timer = _timerValue;
@@ -60,7 +62,9 @@ public class Game : MonoBehaviour
         var flatPlayerPosition = new Vector2(_player.transform.position.x, _player.transform.position.z);
 
         if (flatExitPosition == flatPlayerPosition)
+        {
             Victory();
+        }
     }
 
     private void LookAtPlayerHealth()
@@ -83,10 +87,8 @@ public class Game : MonoBehaviour
         _gameIsEnded = true;
         _player.Disable();
 
-        Debug.Log("Victory!");
-
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        Debug.ClearDeveloperConsole();
+        victoryText.SetActive(true);
+        Invoke("MoveNextLevel", levelLoadingDelay);
     }
 
     public void Lose()
@@ -94,12 +96,17 @@ public class Game : MonoBehaviour
         _gameIsEnded = true;
         _player.Disable();
 
-        Debug.Log("Lose!");
+        loseText.SetActive(true);
         Invoke("RestartLevel", levelLoadingDelay);
-        Debug.ClearDeveloperConsole();
+    }
+
+    void MoveNextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
     void RestartLevel()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+
 }
