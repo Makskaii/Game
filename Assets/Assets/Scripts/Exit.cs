@@ -10,6 +10,8 @@ public class Exit : MonoBehaviour
 
     private MeshRenderer _renderer;
 
+    
+
     private void Awake()
     {
         _renderer = GetComponent<MeshRenderer>();
